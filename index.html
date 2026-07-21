@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeuroFit — Поиск тренеров и партнёров по спорту в России</title>
     <meta name="description" content="Найдите персонального тренера или партнёра для тенниса, футбола, баскетбола, плавания и 35+ видов спорта в вашем городе. Онлайн и офлайн занятия.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏋️%3C/text%3E%3C/svg%3E">
+    <meta property="og:title" content="NeuroFit — Поиск тренеров и партнёров по спорту">
+    <meta property="og:description" content="Более 500 тренеров и 2000+ партнёров. 35+ видов спорта. Найди своего тренера прямо сейчас.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1200">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
             --primary: #00d4aa;
             --primary-dark: #00b894;
@@ -22,7 +26,6 @@
             --border: #1e1e32;
             --gradient: linear-gradient(135deg, #7c3aed, #00d4aa);
         }
-
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: var(--bg-dark);
@@ -30,7 +33,78 @@
             line-height: 1.6;
             overflow-x: hidden;
         }
-
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-cta {
+            padding: 0.6rem 1.5rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 60px; left: 0; right: 0;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 999;
+        }
+        .mobile-nav.active { display: flex; }
+        .mobile-nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
         .hero {
             min-height: 100vh;
             display: flex;
@@ -44,8 +118,8 @@
                 radial-gradient(ellipse at 20% 20%, rgba(124,58,237,0.15) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 80%, rgba(0,212,170,0.1) 0%, transparent 50%),
                 var(--bg-dark);
+            padding-top: 80px;
         }
-
         .hero::before {
             content: '';
             position: absolute;
@@ -54,7 +128,6 @@
             opacity: 0.5;
             pointer-events: none;
         }
-
         .hero-badge {
             display: inline-flex;
             align-items: center;
@@ -70,7 +143,6 @@
             animation: fadeInDown 0.8s ease;
             backdrop-filter: blur(10px);
         }
-
         .hero h1 {
             font-size: clamp(2.8rem, 7vw, 5.5rem);
             font-weight: 900;
@@ -83,7 +155,6 @@
             animation: fadeInUp 0.8s ease 0.2s both;
             letter-spacing: -0.03em;
         }
-
         .hero-subtitle {
             font-size: clamp(1.1rem, 2.5vw, 1.5rem);
             color: var(--text-muted);
@@ -92,7 +163,6 @@
             animation: fadeInUp 0.8s ease 0.4s both;
             font-weight: 400;
         }
-
         .hero-cta {
             display: flex;
             gap: 1rem;
@@ -100,7 +170,6 @@
             justify-content: center;
             animation: fadeInUp 0.8s ease 0.6s both;
         }
-
         .btn {
             padding: 1rem 2.5rem;
             border: none;
@@ -114,54 +183,43 @@
             align-items: center;
             gap: 0.5rem;
         }
-
         .btn-primary {
             background: var(--gradient);
             color: white;
             box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
         }
-
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 40px rgba(124, 58, 237, 0.4);
         }
-
         .btn-outline {
             background: transparent;
             border: 1.5px solid var(--border);
             color: var(--text);
         }
-
         .btn-outline:hover {
             border-color: var(--primary);
             color: var(--primary);
             background: rgba(0, 212, 170, 0.05);
         }
-
         .hero-stats {
             display: flex;
             gap: 4rem;
             margin-top: 4rem;
             animation: fadeInUp 0.8s ease 0.8s both;
         }
-
-        .stat {
-            text-align: center;
-        }
-
+        .stat { text-align: center; }
         .stat-number {
             font-size: 2.5rem;
             font-weight: 800;
             color: var(--primary);
             line-height: 1;
         }
-
         .stat-label {
             font-size: 0.85rem;
             color: var(--text-muted);
             margin-top: 0.5rem;
         }
-
         .search-section {
             padding: 0 2rem 4rem;
             max-width: 900px;
@@ -170,7 +228,6 @@
             z-index: 2;
             margin-top: -3rem;
         }
-
         .search-box {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -182,12 +239,10 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.4);
             backdrop-filter: blur(20px);
         }
-
         .search-field {
             flex: 1;
             min-width: 200px;
         }
-
         .search-field label {
             display: block;
             font-size: 0.75rem;
@@ -197,7 +252,6 @@
             margin-bottom: 0.5rem;
             font-weight: 600;
         }
-
         .search-field select,
         .search-field input {
             width: 100%;
@@ -211,12 +265,10 @@
             transition: border-color 0.3s;
             cursor: pointer;
         }
-
         .search-field select:focus,
         .search-field input:focus {
             border-color: var(--primary);
         }
-
         .search-btn {
             padding: 0.9rem 2rem;
             background: var(--gradient);
@@ -229,37 +281,31 @@
             align-self: flex-end;
             font-size: 1rem;
         }
-
         .search-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(124, 58, 237, 0.3);
         }
-
         section {
             padding: 5rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
-
         .section-header {
             text-align: center;
             margin-bottom: 3.5rem;
         }
-
         .section-header h2 {
             font-size: clamp(1.8rem, 4vw, 2.8rem);
             font-weight: 800;
             margin-bottom: 1rem;
             letter-spacing: -0.02em;
         }
-
         .section-header p {
             color: var(--text-muted);
             max-width: 600px;
             margin: 0 auto;
             font-size: 1.05rem;
         }
-
         .section-tag {
             display: inline-block;
             padding: 0.4rem 1rem;
@@ -273,13 +319,11 @@
             letter-spacing: 0.05em;
             margin-bottom: 1rem;
         }
-
         .sports-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 1rem;
         }
-
         .sport-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -291,7 +335,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .sport-card::before {
             content: '';
             position: absolute;
@@ -301,150 +344,129 @@
             opacity: 0;
             transition: opacity 0.3s;
         }
-
         .sport-card:hover {
             background: var(--bg-card-hover);
             transform: translateY(-5px);
             border-color: rgba(124, 58, 237, 0.3);
             box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
-
-        .sport-card:hover::before {
-            opacity: 1;
-        }
-
+        .sport-card:hover::before { opacity: 1; }
         .sport-emoji {
             font-size: 2.5rem;
             margin-bottom: 0.75rem;
             display: block;
         }
-
         .sport-name {
             font-size: 0.9rem;
             font-weight: 600;
             color: var(--text);
             margin-bottom: 0.25rem;
         }
-
         .sport-count {
             font-size: 0.75rem;
             color: var(--text-muted);
         }
-
         .cities-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1rem;
         }
-
         .city-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: all 0.3s;
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
             cursor: pointer;
         }
-
         .city-card:hover {
             background: var(--bg-card-hover);
-            border-color: var(--primary);
-            transform: translateX(5px);
+            border-color: rgba(0, 212, 170, 0.3);
+            transform: translateY(-3px);
         }
-
-        .city-icon {
-            font-size: 1.8rem;
+        .city-emoji {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            display: block;
         }
-
-        .city-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.2rem;
+        .city-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
         }
-
-        .city-info p {
-            font-size: 0.8rem;
+        .city-stats {
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
-
         .steps-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
         }
-
         .step-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 2rem;
-            text-align: center;
             position: relative;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
-
         .step-card:hover {
-            border-color: var(--accent);
+            background: var(--bg-card-hover);
             transform: translateY(-5px);
         }
-
         .step-number {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
             background: var(--gradient);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 1.5rem;
-            margin: 0 auto 1.25rem;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
             color: white;
-            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
         }
-
         .step-card h3 {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 0.75rem;
         }
-
         .step-card p {
-            font-size: 0.9rem;
             color: var(--text-muted);
+            font-size: 0.95rem;
             line-height: 1.6;
         }
-
         .trainers-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
         }
-
         .trainer-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 1.5rem;
-            transition: all 0.3s;
-            display: flex;
-            gap: 1.25rem;
-            align-items: flex-start;
+            transition: all 0.3s ease;
+            position: relative;
         }
-
         .trainer-card:hover {
             background: var(--bg-card-hover);
+            transform: translateY(-5px);
             border-color: rgba(124, 58, 237, 0.3);
-            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
-
+        .trainer-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
         .trainer-avatar {
             width: 64px;
             height: 64px;
-            border-radius: 50%;
+            border-radius: 16px;
             background: var(--gradient);
             display: flex;
             align-items: center;
@@ -452,636 +474,968 @@
             font-size: 1.8rem;
             flex-shrink: 0;
         }
-
-        .trainer-info {
-            flex: 1;
-        }
-
-        .trainer-info h4 {
+        .trainer-info h3 {
             font-size: 1.1rem;
             font-weight: 700;
             margin-bottom: 0.25rem;
         }
-
-        .trainer-sport {
-            display: inline-block;
-            padding: 0.2rem 0.7rem;
-            background: rgba(0, 212, 170, 0.1);
-            color: var(--primary);
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
         .trainer-meta {
             font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 0.5rem;
         }
-
+        .trainer-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .trainer-tag {
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        .trainer-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .stars {
+            color: #fbbf24;
+            font-size: 0.9rem;
+        }
+        .rating-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
         .trainer-price {
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--primary);
+            margin-bottom: 1rem;
         }
-
-        .trainer-rating {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.85rem;
-            color: #fbbf24;
+        .trainer-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
         }
-
+        .trainer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
+        }
         .partners-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
         }
-
         .partner-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 1.5rem;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
-
         .partner-card:hover {
             background: var(--bg-card-hover);
-            border-color: rgba(236, 72, 153, 0.3);
-            transform: translateY(-3px);
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 170, 0.3);
         }
-
         .partner-header {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin-bottom: 1rem;
         }
-
         .partner-avatar {
             width: 56px;
             height: 56px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ec4899, #f59e0b);
+            background: linear-gradient(135deg, #00d4aa, #7c3aed);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
+            flex-shrink: 0;
         }
-
-        .partner-name {
+        .partner-info h3 {
+            font-size: 1rem;
             font-weight: 700;
-            font-size: 1.05rem;
         }
-
-        .partner-level {
+        .partner-info p {
             font-size: 0.8rem;
             color: var(--text-muted);
         }
-
-        .partner-tags {
+        .partner-details {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
+            gap: 1rem;
             margin-bottom: 1rem;
-        }
-
-        .partner-tag {
-            padding: 0.25rem 0.7rem;
-            background: rgba(124, 58, 237, 0.1);
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            color: #a78bfa;
-            border-radius: 50px;
-            font-size: 0.75rem;
-        }
-
-        .partner-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .partner-location {
             font-size: 0.85rem;
             color: var(--text-muted);
         }
-
-        .btn-small {
-            padding: 0.5rem 1.2rem;
-            background: var(--gradient);
-            color: white;
-            border: none;
+        .partner-btn {
+            width: 100%;
+            padding: 0.7rem;
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text);
             border-radius: 10px;
             font-weight: 600;
-            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
-
-        .btn-small:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        .partner-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(0, 212, 170, 0.05);
         }
-
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        .review-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .review-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+        }
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .review-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .review-author {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .review-sport {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .review-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        .review-rating {
+            color: #fbbf24;
+            font-size: 0.9rem;
+        }
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
         .faq-item {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 16px;
             margin-bottom: 1rem;
             overflow: hidden;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
-
         .faq-item:hover {
-            border-color: rgba(124, 58, 237, 0.2);
+            border-color: rgba(124, 58, 237, 0.3);
         }
-
         .faq-question {
             padding: 1.25rem 1.5rem;
-            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
             font-weight: 600;
-            font-size: 1.05rem;
-            transition: color 0.3s;
+            font-size: 1rem;
         }
-
-        .faq-question:hover {
-            color: var(--primary);
-        }
-
-        .faq-answer {
-            padding: 0 1.5rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-
-        .faq-item.active .faq-answer {
-            padding: 0 1.5rem 1.25rem;
-            max-height: 300px;
-        }
-
         .faq-icon {
-            transition: transform 0.3s;
-            color: var(--text-muted);
+            font-size: 1.2rem;
+            color: var(--primary);
+            transition: transform 0.3s ease;
         }
-
         .faq-item.active .faq-icon {
             transform: rotate(180deg);
-            color: var(--primary);
         }
-
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 1.5rem;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding: 0 1.5rem 1.25rem;
+        }
+        .faq-answer p {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
         .cta-section {
+            text-align: center;
             background: 
-                radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(124,58,237,0.1) 0%, transparent 70%),
                 var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 24px;
             padding: 4rem 2rem;
-            text-align: center;
-            margin: 0 1rem;
-            max-width: calc(1200px - 2rem);
+            margin: 0 2rem;
         }
-
         .cta-section h2 {
             font-size: clamp(1.8rem, 4vw, 2.5rem);
             font-weight: 800;
             margin-bottom: 1rem;
         }
-
         .cta-section p {
             color: var(--text-muted);
             max-width: 500px;
             margin: 0 auto 2rem;
             font-size: 1.1rem;
         }
-
-        .email-form-large {
+        .waitlist-form {
             display: flex;
             gap: 0.75rem;
-            max-width: 480px;
+            max-width: 500px;
             margin: 0 auto;
             flex-wrap: wrap;
+            justify-content: center;
         }
-
-        .email-form-large input {
+        .waitlist-form input {
             flex: 1;
             min-width: 250px;
-            padding: 1rem 1.25rem;
+            padding: 1rem 1.5rem;
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 12px;
             background: var(--bg-dark);
             color: var(--text);
             font-size: 1rem;
             outline: none;
         }
-
-        .email-form-large input:focus {
+        .waitlist-form input:focus {
             border-color: var(--primary);
         }
-
-        /* ===== NEW FOOTER (like neurofit) ===== */
-        .site-footer {
-            border-top: 1px solid var(--border);
-            padding: 60px 0 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-left: 2rem;
-            padding-right: 2rem;
+        .waitlist-form input::placeholder {
+            color: var(--text-muted);
         }
-
-        .footer-grid {
+        .waitlist-form button {
+            padding: 1rem 2rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        .waitlist-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.3);
+        }
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .about-text h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .about-text p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        .about-values {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .about-value {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        .about-value h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--primary);
+        }
+        .about-value p {
+            font-size: 0.8rem;
+            margin-bottom: 0;
+        }
+        .about-visual {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .about-visual .emoji {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+        .about-visual p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .for-trainers-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
+            gap: 1.5rem;
         }
-
-        .footer-col-logo {
-            font-size: 24px;
+        .for-trainers-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .for-trainers-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 170, 0.3);
+        }
+        .for-trainers-card .emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .for-trainers-card h3 {
+            font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 0.75rem;
+        }
+        .for-trainers-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        .footer-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-bottom: 1rem;
         }
-
-        .footer-col-text {
+        .footer-desc {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             line-height: 1.6;
+            margin-bottom: 1.5rem;
         }
-
-        .footer-col-title {
-            margin-bottom: 16px;
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
             font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        .footer-social a:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .footer-column h4 {
+            font-size: 0.9rem;
             font-weight: 700;
+            margin-bottom: 1.25rem;
             color: var(--text);
         }
-
-        .footer-link {
+        .footer-column a {
             display: block;
             color: var(--text-muted);
             text-decoration: none;
-            margin-bottom: 8px;
-            transition: color 0.2s;
-            font-size: 0.95rem;
-        }
-
-        .footer-link:hover {
-            color: var(--text);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
             font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s;
         }
-        /* ===== END NEW FOOTER ===== */
-
+        .footer-column a:hover { color: var(--primary); }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-bottom p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .footer-bottom a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        .footer-bottom a:hover { color: var(--primary); }
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-40px); }
+            from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .reveal {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
-
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
-
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            animation: fadeInUp 0.3s ease;
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .modal h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .modal p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .modal-form input,
+        .modal-form textarea,
+        .modal-form select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-dark);
+            color: var(--text);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            outline: none;
+            font-family: inherit;
+        }
+        .modal-form input:focus,
+        .modal-form textarea:focus,
+        .modal-form select:focus {
+            border-color: var(--primary);
+        }
+        .modal-form button {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .modal-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
+        }
+        .modal-success {
+            display: none;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        .modal-success.active { display: block; }
+        .modal-success .emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        .modal-success h3 {
+            margin-bottom: 0.5rem;
+        }
+        .modal-success p {
+            margin-bottom: 0;
+        }
+        .legal-page {
+            padding-top: 100px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .legal-page h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .legal-page h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+        .legal-page p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        .legal-page ul {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+        .legal-page li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        .legal-page .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+        .legal-page .back-link:hover {
+            text-decoration: underline;
+        }
         @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
             .hero-stats { gap: 2rem; flex-wrap: wrap; }
-            .hero-cta { flex-direction: column; width: 100%; }
-            .hero-cta .btn { width: 100%; justify-content: center; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .about-content { grid-template-columns: 1fr; }
+            .trainers-grid { grid-template-columns: 1fr; }
+            .reviews-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .about-values { grid-template-columns: 1fr; }
             .search-box { flex-direction: column; }
             .search-btn { width: 100%; }
-            .email-form-large { flex-direction: column; }
-            .email-form-large input, .email-form-large .btn { width: 100%; }
-            section { padding: 3rem 1rem; }
-            .sports-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
-            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
         }
     </style>
-    <base target="_blank">
 <base target="_blank">
 </head>
 <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="#" class="nav-logo">🏋️ NeuroFit</a>
+        <div class="nav-links">
+            <a href="#sports">Виды спорта</a>
+            <a href="#cities">Города</a>
+            <a href="#trainers">Тренеры</a>
+            <a href="#partners">Партнёры</a>
+            <a href="#reviews">Отзывы</a>
+            <a href="#about">О нас</a>
+            <a href="#for-trainers">Для тренеров</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact" class="nav-cta">Начать</a>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    </nav>
 
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#sports" onclick="toggleMobileMenu()">Виды спорта</a>
+        <a href="#cities" onclick="toggleMobileMenu()">Города</a>
+        <a href="#trainers" onclick="toggleMobileMenu()">Тренеры</a>
+        <a href="#partners" onclick="toggleMobileMenu()">Партнёры</a>
+        <a href="#reviews" onclick="toggleMobileMenu()">Отзывы</a>
+        <a href="#about" onclick="toggleMobileMenu()">О нас</a>
+        <a href="#for-trainers" onclick="toggleMobileMenu()">Для тренеров</a>
+        <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
+        <a href="#contact" onclick="toggleMobileMenu()" class="nav-cta">Начать</a>
+    </div>
+
+    <!-- HERO -->
     <section class="hero">
         <div class="hero-badge">
-            <span>🔥</span> Более 500 тренеров и 2000+ партнёров уже на платформе
+            <span>🔥</span>
+            <span>Более 500 тренеров и 2000+ партнёров уже на платформе</span>
         </div>
-        <h1>Найди тренера<br>или партнёра<br>по спорту</h1>
+        <h1>Найди тренера 🏋️ или партнёра 🤝 по спорту</h1>
         <p class="hero-subtitle">Персональные тренеры и игроки для тенниса, футбола, баскетбола, плавания и 35+ видов спорта в твоём городе. Онлайн и офлайн занятия.</p>
         <div class="hero-cta">
-            <a href="#sports" class="btn btn-primary">Найти тренера</a>
+            <a href="#trainers" class="btn btn-primary">Найти тренера</a>
             <a href="#partners" class="btn btn-outline">Найти партнёра</a>
-            <button class="btn btn-outline" onclick="alert('Регистрация в разработке')" style="border-color: rgba(236,72,153,0.4); color: #ec4899;">
-                🏋️ Стать тренером
-            </button>
         </div>
         <div class="hero-stats">
-            <div class="stat">
-                <div class="stat-number">500+</div>
-                <div class="stat-label">Тренеров</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number">2000+</div>
-                <div class="stat-label">Партнёров</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number">35+</div>
-                <div class="stat-label">Видов спорта</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number">50+</div>
-                <div class="stat-label">Городов РФ</div>
-            </div>
+            <div class="stat"><div class="stat-number">500+</div><div class="stat-label">Тренеров</div></div>
+            <div class="stat"><div class="stat-number">2000+</div><div class="stat-label">Партнёров</div></div>
+            <div class="stat"><div class="stat-number">35+</div><div class="stat-label">Видов спорта</div></div>
+            <div class="stat"><div class="stat-number">50+</div><div class="stat-label">Городов РФ</div></div>
         </div>
     </section>
 
+    <!-- SEARCH -->
     <div class="search-section">
         <div class="search-box">
             <div class="search-field">
                 <label>Вид спорта</label>
                 <select id="sportSelect">
-                    <option value="">Выберите спорт</option>
-                    <option value="tennis">Теннис</option>
-                    <option value="football">Футбол</option>
-                    <option value="basketball">Баскетбол</option>
-                    <option value="volleyball">Волейбол</option>
-                    <option value="swimming">Плавание</option>
-                    <option value="fitness">Фитнес</option>
-                    <option value="yoga">Йога</option>
-                    <option value="boxing">Бокс</option>
+                    <option value="">Все виды спорта</option>
+                    <option value="Теннис">🎾 Теннис</option>
+                    <option value="Настольный теннис">🏓 Настольный теннис</option>
+                    <option value="Падел">🥎 Падел</option>
+                    <option value="Бадминтон">🏸 Бадминтон</option>
+                    <option value="Футбол">⚽ Футбол</option>
+                    <option value="Баскетбол">🏀 Баскетбол</option>
+                    <option value="Волейбол">🏐 Волейбол</option>
+                    <option value="Гандбол">🤾 Гандбол</option>
+                    <option value="Хоккей">🏒 Хоккей</option>
+                    <option value="Плавание">🏊 Плавание</option>
+                    <option value="Фитнес">💪 Фитнес</option>
+                    <option value="Кроссфит">🏋️ Кроссфит</option>
+                    <option value="Йога">🧘 Йога</option>
+                    <option value="Пилатес">🤸 Пилатес</option>
+                    <option value="Стретчинг">🦵 Стретчинг</option>
+                    <option value="Бокс">🥊 Бокс</option>
+                    <option value="ММА">🥋 ММА</option>
+                    <option value="Дзюдо">🥋 Дзюдо</option>
+                    <option value="Карате">🥋 Карате</option>
+                    <option value="Тхэквондо">🥋 Тхэквондо</option>
+                    <option value="Фехтование">🤺 Фехтование</option>
+                    <option value="Стрельба из лука">🏹 Стрельба из лука</option>
+                    <option value="Стрельба">🎯 Стрельба</option>
+                    <option value="Гольф">⛳ Гольф</option>
+                    <option value="Скейтбординг">🛹 Скейтбординг</option>
+                    <option value="Горные лыжи">⛷️ Горные лыжи</option>
+                    <option value="Сноуборд">🏂 Сноуборд</option>
+                    <option value="Фигурное катание">⛸️ Фигурное катание</option>
+                    <option value="Танцы">💃 Танцы</option>
+                    <option value="Гимнастика">🤸‍♀️ Гимнастика</option>
+                    <option value="Скалолазание">🧗 Скалолазание</option>
+                    <option value="Велоспорт">🚴 Велоспорт</option>
+                    <option value="Бег">🏃 Бег</option>
+                    <option value="Триатлон">🏃‍♂️ Триатлон</option>
+                    <option value="Конный спорт">🏇 Конный спорт</option>
+                    <option value="Шахматы">♟️ Шахматы</option>
                 </select>
             </div>
             <div class="search-field">
                 <label>Город</label>
                 <select id="citySelect">
-                    <option value="">Выберите город</option>
-                    <option value="moscow">Москва</option>
-                    <option value="spb">Санкт-Петербург</option>
-                    <option value="kazan">Казань</option>
-                    <option value="nn">Нижний Новгород</option>
-                    <option value="samara">Самара</option>
-                    <option value="ufa">Уфа</option>
-                    <option value="krasnodar">Краснодар</option>
-                    <option value="ekb">Екатеринбург</option>
-                    <option value="novosib">Новосибирск</option>
+                    <option value="">Все города</option>
+                    <option value="Москва">Москва</option>
+                    <option value="Санкт-Петербург">Санкт-Петербург</option>
+                    <option value="Казань">Казань</option>
+                    <option value="Нижний Новгород">Нижний Новгород</option>
+                    <option value="Самара">Самара</option>
+                    <option value="Екатеринбург">Екатеринбург</option>
+                    <option value="Новосибирск">Новосибирск</option>
+                    <option value="Краснодар">Краснодар</option>
+                    <option value="Сочи">Сочи</option>
+                    <option value="Владивосток">Владивосток</option>
+                    <option value="Уфа">Уфа</option>
+                    <option value="Челябинск">Челябинск</option>
                 </select>
             </div>
             <div class="search-field">
                 <label>Тип занятия</label>
-                <select>
-                    <option value="">Все типы</option>
-                    <option value="trainer">Персональный тренер</option>
-                    <option value="partner">Партнёр для игры</option>
-                    <option value="group">Групповые занятия</option>
-                    <option value="online">Онлайн тренировка</option>
+                <select id="typeSelect">
+                    <option value="">Любой</option>
+                    <option value="Онлайн">Онлайн</option>
+                    <option value="Офлайн">Офлайн</option>
+                    <option value="Групповые">Групповые</option>
                 </select>
             </div>
-            <button class="search-btn" onclick="handleSearch()">Найти</button>
+            <button class="search-btn" onclick="handleSearch()">🔍 Найти</button>
         </div>
     </div>
 
+    <!-- SPORTS -->
     <section id="sports">
         <div class="section-header reveal">
-            <span class="section-tag">Виды спорта</span>
-            <h2>35+ видов спорта</h2>
-            <p>Выберите свой вид спорта — найдём тренера или партнёра именно для него</p>
+            <div class="section-tag">Виды спорта</div>
+            <h2>35+ направлений на выбор</h2>
+            <p>От классических до экзотических — найдите то, что вдохновляет</p>
         </div>
-        <div class="sports-grid reveal">
-            <div class="sport-card" onclick="selectSport('tennis')"><span class="sport-emoji">🎾</span><div class="sport-name">Теннис</div><div class="sport-count">87 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('table-tennis')"><span class="sport-emoji">🏓</span><div class="sport-name">Настольный теннис</div><div class="sport-count">45 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('padel')"><span class="sport-emoji">🥎</span><div class="sport-name">Падел</div><div class="sport-count">23 тренера</div></div>
-            <div class="sport-card" onclick="selectSport('badminton')"><span class="sport-emoji">🏸</span><div class="sport-name">Бадминтон</div><div class="sport-count">34 тренера</div></div>
-            <div class="sport-card" onclick="selectSport('football')"><span class="sport-emoji">⚽</span><div class="sport-name">Футбол</div><div class="sport-count">156 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('basketball')"><span class="sport-emoji">🏀</span><div class="sport-name">Баскетбол</div><div class="sport-count">78 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('volleyball')"><span class="sport-emoji">🏐</span><div class="sport-name">Волейбол</div><div class="sport-count">52 тренера</div></div>
-            <div class="sport-card" onclick="selectSport('handball')"><span class="sport-emoji">🤾</span><div class="sport-name">Гандбол</div><div class="sport-count">18 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('hockey')"><span class="sport-emoji">🏒</span><div class="sport-name">Хоккей</div><div class="sport-count">41 тренер</div></div>
-            <div class="sport-card" onclick="selectSport('swimming')"><span class="sport-emoji">🏊</span><div class="sport-name">Плавание</div><div class="sport-count">93 тренера</div></div>
-            <div class="sport-card" onclick="selectSport('fitness')"><span class="sport-emoji">💪</span><div class="sport-name">Фитнес</div><div class="sport-count">234 тренера</div></div>
-            <div class="sport-card" onclick="selectSport('crossfit')"><span class="sport-emoji">🏋️</span><div class="sport-name">Кроссфит</div><div class="sport-count">67 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('yoga')"><span class="sport-emoji">🧘</span><div class="sport-name">Йога</div><div class="sport-count">112 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('pilates')"><span class="sport-emoji">🤸</span><div class="sport-name">Пилатес</div><div class="sport-count">89 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('stretching')"><span class="sport-emoji">🦵</span><div class="sport-name">Стретчинг</div><div class="sport-count">56 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('boxing')"><span class="sport-emoji">🥊</span><div class="sport-name">Бокс</div><div class="sport-count">64 тренера</div></div>
-            <div class="sport-card" onclick="selectSport('mma')"><span class="sport-emoji">🥋</span><div class="sport-name">ММА</div><div class="sport-count">38 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('judo')"><span class="sport-emoji">🥋</span><div class="sport-name">Дзюдо</div><div class="sport-count">29 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('karate')"><span class="sport-emoji">🥋</span><div class="sport-name">Карате</div><div class="sport-count">31 тренер</div></div>
-            <div class="sport-card" onclick="selectSport('taekwondo')"><span class="sport-emoji">🥋</span><div class="sport-name">Тхэквондо</div><div class="sport-count">22 тренера</div></div>
-            <div class="sport-card" onclick="selectSport('fencing')"><span class="sport-emoji">🤺</span><div class="sport-name">Фехтование</div><div class="sport-count">15 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('archery')"><span class="sport-emoji">🏹</span><div class="sport-name">Стрельба из лука</div><div class="sport-count">19 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('shooting')"><span class="sport-emoji">🎯</span><div class="sport-name">Стрельба</div><div class="sport-count">12 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('golf')"><span class="sport-emoji">⛳</span><div class="sport-name">Гольф</div><div class="sport-count">8 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('skate')"><span class="sport-emoji">🛹</span><div class="sport-name">Скейтбординг</div><div class="sport-count">14 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('ski')"><span class="sport-emoji">⛷️</span><div class="sport-name">Горные лыжи</div><div class="sport-count">27 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('snowboard')"><span class="sport-emoji">🏂</span><div class="sport-name">Сноуборд</div><div class="sport-count">21 тренер</div></div>
-            <div class="sport-card" onclick="selectSport('skating')"><span class="sport-emoji">⛸️</span><div class="sport-name">Фигурное катание</div><div class="sport-count">16 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('dance')"><span class="sport-emoji">💃</span><div class="sport-name">Танцы</div><div class="sport-count">178 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('gymnastics')"><span class="sport-emoji">🤸‍♀️</span><div class="sport-name">Гимнастика</div><div class="sport-count">43 тренера</div></div>
-            <div class="sport-card" onclick="selectSport('climbing')"><span class="sport-emoji">🧗</span><div class="sport-name">Скалолазание</div><div class="sport-count">35 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('cycling')"><span class="sport-emoji">🚴</span><div class="sport-name">Велоспорт</div><div class="sport-count">48 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('running')"><span class="sport-emoji">🏃</span><div class="sport-name">Бег</div><div class="sport-count">72 тренера</div></div>
-            <div class="sport-card" onclick="selectSport('triathlon')"><span class="sport-emoji">🏃‍♂️</span><div class="sport-name">Триатлон</div><div class="sport-count">11 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('equestrian')"><span class="sport-emoji">🏇</span><div class="sport-name">Конный спорт</div><div class="sport-count">9 тренеров</div></div>
-            <div class="sport-card" onclick="selectSport('chess')"><span class="sport-emoji">♟️</span><div class="sport-name">Шахматы</div><div class="sport-count">33 тренера</div></div>
-        </div>
+        <div class="sports-grid" id="sportsGrid"></div>
     </section>
 
-    <section id="cities" style="background: rgba(124,58,237,0.03); border-radius: 24px; margin: 0 1rem; max-width: calc(1200px - 2rem);">
+    <!-- CITIES -->
+    <section id="cities">
         <div class="section-header reveal">
-            <span class="section-tag">Города</span>
-            <h2>50+ городов России</h2>
-            <p>Найдите тренера или партнёра в своём городе — от Москвы до Владивостока</p>
+            <div class="section-tag">Города</div>
+            <h2>Тренеры в 50+ городах России</h2>
+            <p>Найдите специалиста рядом с вами</p>
         </div>
-        <div class="cities-grid reveal">
-            <div class="city-card"><span class="city-icon">🏙️</span><div class="city-info"><h4>Москва</h4><p>234 тренера · 890 партнёров</p></div></div>
-            <div class="city-card"><span class="city-icon">🏛️</span><div class="city-info"><h4>Санкт-Петербург</h4><p>189 тренеров · 567 партнёров</p></div></div>
-            <div class="city-card"><span class="city-icon">🌆</span><div class="city-info"><h4>Казань</h4><p>67 тренеров · 198 партнёров</p></div></div>
-            <div class="city-card"><span class="city-icon">🏘️</span><div class="city-info"><h4>Нижний Новгород</h4><p>54 тренера · 145 партнёров</p></div></div>
-            <div class="city-card"><span class="city-icon">🌇</span><div class="city-info"><h4>Самара</h4><p>43 тренера · 112 партнёров</p></div></div>
-            <div class="city-card"><span class="city-icon">🏙️</span><div class="city-info"><h4>Екатеринбург</h4><p>78 тренеров · 234 партнёра</p></div></div>
-            <div class="city-card"><span class="city-icon">🌃</span><div class="city-info"><h4>Новосибирск</h4><p>56 тренеров · 167 партнёров</p></div></div>
-            <div class="city-card"><span class="city-icon">🏖️</span><div class="city-info"><h4>Краснодар</h4><p>89 тренеров · 312 партнёров</p></div></div>
-            <div class="city-card"><span class="city-icon">🏔️</span><div class="city-info"><h4>Сочи</h4><p>45 тренеров · 178 партнёров</p></div></div>
-            <div class="city-card"><span class="city-icon">🌉</span><div class="city-info"><h4>Владивосток</h4><p>23 тренера · 67 партнёров</p></div></div>
-            <div class="city-card"><span class="city-icon">🏙️</span><div class="city-info"><h4>Уфа</h4><p>34 тренера · 89 партнёров</p></div></div>
-            <div class="city-card"><span class="city-icon">🌆</span><div class="city-info"><h4>Челябинск</h4><p>41 тренер · 123 партнёра</p></div></div>
-        </div>
+        <div class="cities-grid" id="citiesGrid"></div>
     </section>
 
+    <!-- HOW IT WORKS -->
     <section>
         <div class="section-header reveal">
-            <span class="section-tag">Как это работает</span>
-            <h2>Начни тренироваться за 4 шага</h2>
+            <div class="section-tag">Как это работает</div>
+            <h2>Начните заниматься за 4 шага</h2>
         </div>
-        <div class="steps-grid reveal">
-            <div class="step-card"><div class="step-number">1</div><h3>Выберите спорт</h3><p>Теннис, футбол, йога, плавание — более 35 видов спорта на выбор</p></div>
-            <div class="step-card"><div class="step-number">2</div><h3>Укажите город</h3><p>Выберите свой город или район — мы найдём ближайших тренеров и партнёров</p></div>
-            <div class="step-card"><div class="step-number">3</div><h3>Сравните и выберите</h3><p>Смотрите профили, отзывы, цены и рейтинги — выбирайте лучшего</p></div>
-            <div class="step-card"><div class="step-number">4</div><h3>Начните заниматься</h3><p>Свяжитесь напрямую, договоритесь о времени и месте — и вперёд!</p></div>
+        <div class="steps-grid">
+            <div class="step-card reveal"><div class="step-number">1</div><h3>Выберите спорт</h3><p>Теннис, футбол, йога, плавание — более 35 видов спорта на выбор</p></div>
+            <div class="step-card reveal"><div class="step-number">2</div><h3>Укажите город</h3><p>Выберите свой город или район — мы найдём ближайших тренеров и партнёров</p></div>
+            <div class="step-card reveal"><div class="step-number">3</div><h3>Сравните и выберите</h3><p>Смотрите профили, отзывы, цены и рейтинги — выбирайте лучшего</p></div>
+            <div class="step-card reveal"><div class="step-number">4</div><h3>Начните заниматься</h3><p>Свяжитесь напрямую, договоритесь о времени и месте — и вперёд!</p></div>
         </div>
     </section>
 
+    <!-- TRAINERS -->
     <section id="trainers">
         <div class="section-header reveal">
-            <span class="section-tag">Тренеры</span>
-            <h2>Популярные тренеры</h2>
-            <p>Проверенные специалисты с отзывами и рейтингом</p>
+            <div class="section-tag">Тренеры</div>
+            <h2>Проверенные тренеры</h2>
+            <p>Каждый специалист проходит верификацию</p>
         </div>
-        <div class="trainers-grid reveal">
-            <div class="trainer-card"><div class="trainer-avatar">👨</div><div class="trainer-info"><h4>Александр Петров</h4><span class="trainer-sport">🎾 Теннис</span><div class="trainer-meta">Москва · 12 лет опыта</div><div class="trainer-rating">★★★★★ 4.9 (127 отзывов)</div><div class="trainer-price">от 3 500 ₽/час</div></div></div>
-            <div class="trainer-card"><div class="trainer-avatar">👩</div><div class="trainer-info"><h4>Мария Иванова</h4><span class="trainer-sport">🧘 Йога</span><div class="trainer-meta">Санкт-Петербург · 8 лет опыта</div><div class="trainer-rating">★★★★★ 4.8 (89 отзывов)</div><div class="trainer-price">от 2 000 ₽/час</div></div></div>
-            <div class="trainer-card"><div class="trainer-avatar">👨</div><div class="trainer-info"><h4>Дмитрий Соколов</h4><span class="trainer-sport">⚽ Футбол</span><div class="trainer-meta">Казань · 15 лет опыта</div><div class="trainer-rating">★★★★★ 4.9 (203 отзыва)</div><div class="trainer-price">от 2 500 ₽/час</div></div></div>
-            <div class="trainer-card"><div class="trainer-avatar">👩</div><div class="trainer-info"><h4>Анна Козлова</h4><span class="trainer-sport">🏊 Плавание</span><div class="trainer-meta">Екатеринбург · 10 лет опыта</div><div class="trainer-rating">★★★★★ 4.7 (156 отзывов)</div><div class="trainer-price">от 2 200 ₽/час</div></div></div>
-            <div class="trainer-card"><div class="trainer-avatar">👨</div><div class="trainer-info"><h4>Сергей Волков</h4><span class="trainer-sport">💪 Фитнес</span><div class="trainer-meta">Краснодар · 6 лет опыта</div><div class="trainer-rating">★★★★★ 4.8 (178 отзывов)</div><div class="trainer-price">от 1 800 ₽/час</div></div></div>
-            <div class="trainer-card"><div class="trainer-avatar">👩</div><div class="trainer-info"><h4>Елена Смирнова</h4><span class="trainer-sport">🥊 Бокс</span><div class="trainer-meta">Москва · 9 лет опыта</div><div class="trainer-rating">★★★★★ 4.9 (94 отзыва)</div><div class="trainer-price">от 3 000 ₽/час</div></div></div>
-        </div>
+        <div class="trainers-grid" id="trainersGrid"></div>
     </section>
 
+    <!-- PARTNERS -->
     <section id="partners">
         <div class="section-header reveal">
-            <span class="section-tag">Партнёры</span>
-            <h2>Найди партнёра для игры</h2>
-            <p>Ищите партнёров по уровню, стилю игры и расписанию</p>
+            <div class="section-tag">Партнёры</div>
+            <h2>Найдите партнёра для игры</h2>
+            <p>Ищите игроков по уровню и расписанию</p>
         </div>
-        <div class="partners-grid reveal">
-            <div class="partner-card"><div class="partner-header"><div class="partner-avatar">👨</div><div><div class="partner-name">Игорь, 28 лет</div><div class="partner-level">Уровень: Средний (3.5)</div></div></div><div class="partner-tags"><span class="partner-tag">🎾 Теннис</span><span class="partner-tag">Вечер</span><span class="partner-tag">Выходные</span></div><div class="partner-footer"><span class="partner-location">📍 Москва, ЮЗАО</span><button class="btn-small" onclick="alert('Функция в разработке')">Написать</button></div></div>
-            <div class="partner-card"><div class="partner-header"><div class="partner-avatar">👩</div><div><div class="partner-name">Ольга, 24 года</div><div class="partner-level">Уровень: Начинающий (2.0)</div></div></div><div class="partner-tags"><span class="partner-tag">🏸 Бадминтон</span><span class="partner-tag">Утро</span><span class="partner-tag">Будни</span></div><div class="partner-footer"><span class="partner-location">📍 Санкт-Петербург, Центр</span><button class="btn-small" onclick="alert('Функция в разработке')">Написать</button></div></div>
-            <div class="partner-card"><div class="partner-header"><div class="partner-avatar">👨</div><div><div class="partner-name">Артём, 31 год</div><div class="partner-level">Уровень: Продвинутый (4.5)</div></div></div><div class="partner-tags"><span class="partner-tag">⚽ Футбол</span><span class="partner-tag">Вечер</span><span class="partner-tag">Суббота</span></div><div class="partner-footer"><span class="partner-location">📍 Казань, Советский р-н</span><button class="btn-small" onclick="alert('Функция в разработке')">Написать</button></div></div>
-            <div class="partner-card"><div class="partner-header"><div class="partner-avatar">👩</div><div><div class="partner-name">Ксения, 26 лет</div><div class="partner-level">Уровень: Средний (3.0)</div></div></div><div class="partner-tags"><span class="partner-tag">🏀 Баскетбол</span><span class="partner-tag">Вечер</span><span class="partner-tag">Будни</span></div><div class="partner-footer"><span class="partner-location">📍 Екатеринбург, ВИЗ</span><button class="btn-small" onclick="alert('Функция в разработке')">Написать</button></div></div>
-            <div class="partner-card"><div class="partner-header"><div class="partner-avatar">👨</div><div><div class="partner-name">Максим, 35 лет</div><div class="partner-level">Уровень: Начинающий (1.5)</div></div></div><div class="partner-tags"><span class="partner-tag">🏊 Плавание</span><span class="partner-tag">Утро</span><span class="partner-tag">Ежедневно</span></div><div class="partner-footer"><span class="partner-location">📍 Краснодар, Центр</span><button class="btn-small" onclick="alert('Функция в разработке')">Написать</button></div></div>
-            <div class="partner-card"><div class="partner-header"><div class="partner-avatar">👩</div><div><div class="partner-name">Виктория, 22 года</div><div class="partner-level">Уровень: Продвинутый (5.0)</div></div></div><div class="partner-tags"><span class="partner-tag">🏐 Волейбол</span><span class="partner-tag">Вечер</span><span class="partner-tag">Выходные</span></div><div class="partner-footer"><span class="partner-location">📍 Нижний Новгород</span><button class="btn-small" onclick="alert('Функция в разработке')">Написать</button></div></div>
+        <div class="partners-grid" id="partnersGrid"></div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews">
+        <div class="section-header reveal">
+            <div class="section-tag">Отзывы</div>
+            <h2>Что говорят наши пользователи</h2>
+            <p>Реальные истории от реальных людей</p>
+        </div>
+        <div class="reviews-grid" id="reviewsGrid"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="section-header reveal">
+            <div class="section-tag">О нас</div>
+            <h2>Кто стоит за NeuroFit</h2>
+        </div>
+        <div class="about-content reveal">
+            <div class="about-text">
+                <h3>Мы объединяем спорт и технологии</h3>
+                <p>NeuroFit — это платформа, которая помогает людям находить лучших тренеров и партнёров для занятий спортом. Мы верим, что каждый заслуживает персонального подхода к физической активности.</p>
+                <p>Наша миссия — сделать спорт доступным для каждого, независимо от уровня подготовки, возраста и места жительства.</p>
+                <div class="about-values">
+                    <div class="about-value"><h4>🔒 Безопасность</h4><p>Все тренеры проходят верификацию</p></div>
+                    <div class="about-value"><h4>⚡ Скорость</h4><p>Найдите тренера за 5 минут</p></div>
+                    <div class="about-value"><h4>💎 Качество</h4><p>Только проверенные специалисты</p></div>
+                    <div class="about-value"><h4>🤝 Поддержка</h4><p>Помогаем на каждом этапе</p></div>
+                </div>
+            </div>
+            <div class="about-visual">
+                <div class="emoji">🧠</div>
+                <h3 style="margin-bottom:0.5rem;">NeuroFit Team</h3>
+                <p>Москва, Россия<br>Основан в 2024 году</p>
+                <p style="margin-top:1rem;"><a href="mailto:hello@neurofit.ru" style="color:var(--primary);text-decoration:none;">hello@neurofit.ru</a></p>
+            </div>
         </div>
     </section>
 
+    <!-- FOR TRAINERS -->
+    <section id="for-trainers">
+        <div class="section-header reveal">
+            <div class="section-tag">Для тренеров</div>
+            <h2>Станьте тренером на NeuroFit</h2>
+            <p>Расширьте свою клиентскую базу и зарабатывайте больше</p>
+        </div>
+        <div class="for-trainers-grid">
+            <div class="for-trainers-card reveal"><div class="emoji">📈</div><h3>Новые клиенты</h3><p>Получайте заявки от людей, которые ищут тренера именно в вашем городе и по вашему виду спорта.</p></div>
+            <div class="for-trainers-card reveal"><div class="emoji">💰</div><h3>Гибкие условия</h3><p>Устанавливайте свои цены и расписание. Комиссия платформы всего 10% от стоимости занятия.</p></div>
+            <div class="for-trainers-card reveal"><div class="emoji">⭐</div><h3>Рейтинг и отзывы</h3><p>Чем больше положительных отзывов — тем выше ваш рейтинг и больше клиентов.</p></div>
+            <div class="for-trainers-card reveal"><div class="emoji">🛡️</div><h3>Защита платежей</h3><p>Все транзакции проходят через защищённую систему. Деньги приходят после проведённого занятия.</p></div>
+        </div>
+        <div style="text-align:center;margin-top:2rem;">
+            <button class="btn btn-primary" onclick="openModal('trainer')">Стать тренером</button>
+        </div>
+    </section>
+
+    <!-- FAQ -->
     <section id="faq">
         <div class="section-header reveal">
-            <span class="section-tag">FAQ</span>
+            <div class="section-tag">FAQ</div>
             <h2>Частые вопросы</h2>
         </div>
-        <div class="faq-container reveal">
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Как найти тренера в своём городе?<span class="faq-icon">▼</span></div><div class="faq-answer">Выберите вид спорта и город в поисковой строке сверху, либо кликните на карточку нужного спорта. Система покажет всех доступных тренеров с фильтрами по цене, рейтингу и опыту.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Как работает поиск партнёров?<span class="faq-icon">▼</span></div><div class="faq-answer">Укажите вид спорта, свой уровень игры и удобное время. Мы покажем партнёров в вашем районе с похожим уровнем и совместимым расписанием. Можно написать напрямую и договориться о игре.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Есть ли онлайн-тренировки?<span class="faq-icon">▼</span></div><div class="faq-answer">Да! Многие тренеры проводят занятия онлайн через видеосвязь. Это удобно, если вы живёте в небольшом городе или предпочитаете тренироваться дома. Фильтруйте по типу занятия «Онлайн».</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Как проверяются тренеры?<span class="faq-icon">▼</span></div><div class="faq-answer">Все тренеры проходят верификацию: мы проверяем дипломы, сертификаты и опыт работы. Также есть система отзывов — вы можете ознакомиться с мнением других клиентов перед выбором.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Сколько стоят занятия?<span class="faq-icon">▼</span></div><div class="faq-answer">Цены варьируются от 1 000 до 5 000 ₽ за час в зависимости от вида спорта, опыта тренера и города. Каждый тренер указывает свою стоимость в профиле. Первое пробное занятие часто со скидкой.</div></div>
-            <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Можно ли найти партнёра для командного спорта?<span class="faq-icon">▼</span></div><div class="faq-answer">Конечно! Для футбола, баскетбола, волейбола и других командных видов спорта вы можете найти как одного партнёра, так и собрать целую команду. Укажите количество нужных игроков в фильтрах.</div></div>
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)"><span>Как найти тренера в своём городе?</span><span class="faq-icon">▼</span></div>
+                <div class="faq-answer"><p>Выберите вид спорта и город в поисковой строке сверху, либо кликните на карточку нужного спорта. Система покажет всех доступных тренеров с фильтрами по цене, рейтингу и опыту.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)"><span>Как работает поиск партнёров?</span><span class="faq-icon">▼</span></div>
+                <div class="faq-answer"><p>Укажите вид спорта, свой уровень игры и удобное время. Мы покажем партнёров в вашем районе с похожим уровнем и совместимым расписанием. Можно написать напрямую и договориться о игре.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)"><span>Есть ли онлайн-тренировки?</span><span class="faq-icon">▼</span></div>
+                <div class="faq-answer"><p>Да! Многие тренеры проводят занятия онлайн через видеосвязь. Это удобно, если вы живёте в небольшом городе или предпочитаете тренироваться дома. Фильтруйте по типу занятия «Онлайн».</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)"><span>Как проверяются тренеры?</span><span class="faq-icon">▼</span></div>
+                <div class="faq-answer"><p>Все тренеры проходят верификацию: мы проверяем дипломы, сертификаты и опыт работы. Также есть система отзывов — вы можете ознакомиться с мнением других клиентов перед выбором.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)"><span>Сколько стоят занятия?</span><span class="faq-icon">▼</span></div>
+                <div class="faq-answer"><p>Цены варьируются от 1 000 до 5 000 ₽ за час в зависимости от вида спорта, опыта тренера и города. Каждый тренер указывает свою стоимость в профиле. Первое пробное занятие часто со скидкой.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)"><span>Можно ли найти партнёра для командного спорта?</span><span class="faq-icon">▼</span></div>
+                <div class="faq-answer"><p>Конечно! Для футбола, баскетбола, волейбола и других командных видов спорта вы можете найти как одного партнёра, так и собрать целую команду. Укажите количество нужных игроков в фильтрах.</p></div>
+            </div>
         </div>
     </section>
 
-    <section>
+    <!-- CTA -->
+    <section id="contact">
         <div class="cta-section reveal">
             <h2>Готовы начать тренироваться?</h2>
             <p>Присоединяйтесь к тысячам спортсменов, которые уже нашли своего тренера или партнёра</p>
-            <form class="email-form-large" onsubmit="handleSubmit(event)">
+            <form class="waitlist-form" onsubmit="handleSubmit(event)">
                 <input type="email" placeholder="Ваш email" required>
-                <button type="submit" class="btn btn-primary">Присоединиться</button>
+                <button type="submit">Присоединиться</button>
             </form>
         </div>
     </section>
 
-    <!-- ===== NEW FOOTER (like neurofit) ===== -->
-    <footer class="site-footer" id="contacts">
+    <!-- FOOTER -->
+    <footer>
         <div class="footer-grid">
             <div>
-                <div class="footer-col-logo">🏋️ NeuroFit</div>
-                <p class="footer-col-text">Поиск тренеров и партнёров по спорту в России</p>
+                <div class="footer-brand">🏋️ NeuroFit</div>
+                <p class="footer-desc">Платформа для поиска тренеров и партнёров по спорту в России. Более 500 тренеров, 35+ видов спорта, 50+ городов.</p>
+                <div class="footer-social">
+                    <a href="https://t.me/neurofit" target="_blank" title="Telegram">✈️</a>
+                    <a href="#" title="VK">📱</a>
+                    <a href="#" title="Instagram">📷</a>
+                    <a href="#" title="YouTube">▶️</a>
+                </div>
             </div>
-            <div>
-                <h4 class="footer-col-title">Контакты</h4>
-                <p class="footer-col-text" style="margin-bottom: 8px;">Email: hello@neurofit.ru</p>
-                <p class="footer-col-text" style="margin-bottom: 8px;">Тел: +7 (999) 123-45-67</p>
-                <p class="footer-col-text">Telegram: @neurofit_support</p>
+            <div class="footer-column">
+                <h4>Платформа</h4>
+                <a href="#trainers">Найти тренера</a>
+                <a href="#partners">Найти партнёра</a>
+                <a href="#for-trainers">Стать тренером</a>
+                <a href="#reviews">Отзывы</a>
             </div>
-            <div>
-                <h4 class="footer-col-title">Правовая информация</h4>
-                <a href="#" class="footer-link" onclick="alert('Страница в разработке'); return false;">Публичная оферта</a>
-                <a href="#" class="footer-link" onclick="alert('Страница в разработке'); return false;">Политика конфиденциальности</a>
-                <a href="#" class="footer-link" onclick="alert('Страница в разработке'); return false;">Пользовательское соглашение</a>
+            <div class="footer-column">
+                <h4>Компания</h4>
+                <a href="#about">О нас</a>
+                <a href="#faq">FAQ</a>
+                <a href="mailto:hello@neurofit.ru">Контакты</a>
+                <a href="#" onclick="openModal('feedback')">Обратная связь</a>
+            </div>
+            <div class="footer-column">
+                <h4>Правовая информация</h4>
+                <a href="#" onclick="showLegal('offer')">Публичная оферта</a>
+                <a href="#" onclick="showLegal('privacy')">Политика конфиденциальности</a>
+                <a href="#" onclick="showLegal('terms')">Пользовательское соглашение</a>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 NeuroFit. ИНН: 7700000000 | ОГРН: 1160000000000</p>
+            <p>© 2024 NeuroFit. Все права защищены.</p>
+            <div style="display:flex;gap:1.5rem;">
+                <a href="#" onclick="showLegal('offer')">Оферта</a>
+                <a href="#" onclick="showLegal('privacy')">Конфиденциальность</a>
+            </div>
         </div>
     </footer>
-    <!-- ===== END NEW FOOTER ===== -->
 
-    <script>
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.1 });
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="modalContent"></div>
+            <div class="modal-success" id="modalSuccess">
+                <div class="emoji">🎉</div>
+                <h3>Заявка отправлена!</h3>
+                <p>Мы свяжемся с вами в ближайшее время.</p>
+            </div>
+        </div>
+    </div>
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        function toggleFaq(element) {
-            const item = element.parentElement;
-            const wasActive = item.classList.contains('active');
-            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-            if (!wasActive) item.classList.add('active');
-        }
-
-        function handleSearch() {
-            const sport = document.getElementById('sportSelect').value;
-            const city = document.getElementById('citySelect').value;
-            if (!sport && !city) {
-                alert('Выберите вид спорта или город для поиска');
-                return;
-            }
-            document.getElementById('trainers').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function selectSport(sport) {
-            document.getElementById('sportSelect').value = sport;
-            document.getElementById('trainers').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function handleSubmit(e) {
-            e.preventDefault();
-            const email = e.target.querySelector('input[type="email"]').value;
-            const emails = JSON.parse(localStorage.getItem('neurofit_waitlist') || '[]');
-            emails.push({ email, date: new Date().toISOString() });
-            localStorage.setItem('neurofit_waitlist', JSON.stringify(emails));
-            alert('Спасибо за интерес! Мы свяжемся с вами, когда сервис запустится 🚀');
-            e.target.reset();
-        }
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-    </script>
-</body>
-</html>
+    <!-- LEGAL PAGES -->
+    <div id="legalPages" style="display:none;"></div>
