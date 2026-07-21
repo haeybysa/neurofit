@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroFit — Поиск тренеров и партнёров по спорту</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">🏋️ NeuroFit</div>
+            <nav class="nav">
+                <a href="#trainers">Тренеры</a>
+                <a href="#how-it-works">Как это работает</a>
+                <a href="#cities">Города</a>
+                <a href="#contacts">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Найди тренера или партнёра по спорту</h1>
+            <p>Персональные тренеры и игроки для 35+ видов спорта в твоём городе</p>
+
+            <div class="search-box">
+                <select id="sport-select">
+                    <option value="">Вид спорта</option>
+                </select>
+                <select id="city-select">
+                    <option value="">Город</option>
+                </select>
+                <select id="type-select">
+                    <option value="">Тип занятия</option>
+                    <option value="offline">Офлайн</option>
+                    <option value="online">Онлайн</option>
+                </select>
+                <button id="search-btn" class="btn-primary">Найти</button>
+            </div>
+
+            <div class="stats">
+                <div class="stat"><span class="stat-num">500+</span> Тренеров</div>
+                <div class="stat"><span class="stat-num">2000+</span> Партнёров</div>
+                <div class="stat"><span class="stat-num">35+</span> Видов спорта</div>
+                <div class="stat"><span class="stat-num">50+</span> Городов РФ</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sports" class="sports">
+        <div class="container">
+            <h2>Популярные виды спорта</h2>
+            <div class="sports-grid" id="sports-grid"></div>
+        </div>
+    </section>
+
+    <section id="trainers" class="trainers">
+        <div class="container">
+            <h2>Топ тренеры</h2>
+            <div class="trainers-grid" id="trainers-grid"></div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2>Как это работает</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>Выберите спорт</h3>
+                    <p>Теннис, футбол, йога, плавание — более 35 видов спорта</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>Укажите город</h3>
+                    <p>Выберите свой город — мы найдём ближайших тренеров</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>Сравните и выберите</h3>
+                    <p>Смотрите профили, отзывы, цены и рейтинги</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h3>Начните заниматься</h3>
+                    <p>Свяжитесь напрямую и договоритесь о времени</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cities" class="cities">
+        <div class="container">
+            <h2>Города</h2>
+            <div class="cities-grid" id="cities-grid"></div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Готовы начать тренироваться?</h2>
+            <p>Присоединяйтесь к тысячам спортсменов</p>
+            <button class="btn-primary btn-large" onclick="scrollToSearch()">Найти тренера</button>
+        </div>
+    </section>
+
+    <footer id="contacts" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="logo">🏋️ NeuroFit</div>
+                    <p>Поиск тренеров и партнёров по спорту в России</p>
+                </div>
+                <div>
+                    <h4>Контакты</h4>
+                    <p>Email: hello@neurofit.ru</p>
+                    <p>Тел: +7 (999) 123-45-67</p>
+                    <p>Telegram: @neurofit_support</p>
+                </div>
+                <div>
+                    <h4>Правовая информация</h4>
+                    <a href="/offer.html">Публичная оферта</a>
+                    <a href="/privacy.html">Политика конфиденциальности</a>
+                    <a href="/terms.html">Пользовательское соглашение</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 NeuroFit. ИНН: 7700000000 | ОГРН: 1160000000000</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="trainer-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
