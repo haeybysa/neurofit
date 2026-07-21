@@ -68,3 +68,17 @@ class Booking(Base):
     message = Column(Text)
     status = Column(String(20), default="new")
     created_at = Column(DateTime, default=datetime.utcnow)
+class Partner(Base):
+    __tablename__ = "partners"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    first_name = Column(String(100), nullable=False)
+    age = Column(Integer)
+    level = Column(String(50))  # начинающий, средний, продвинутый
+    sport_type_id = Column(Integer, ForeignKey("sport_types.id"))
+    city_id = Column(Integer, ForeignKey("cities.id"))
+    preferred_time = Column(String(100))  # утро, вечер, выходные
+    about = Column(Text)
+    contact = Column(String(100))  # Telegram или телефон
+    created_at = Column(DateTime, default=datetime.utcnow)
+    is_active = Column(Boolean, default=True)
